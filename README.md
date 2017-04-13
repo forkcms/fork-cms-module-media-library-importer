@@ -16,17 +16,6 @@ Use at your own risk, this module isn't finished yet and still in development.
 
 ### Example
 
-**Example situation:**
-
-Imagine we are making a connection with a vehicles API, which returns all current vehicles data + URL's to their images.
-But now you want to create a "lightbox" or "slider" in your website using all those images and creating your own thumbnails... This can get kinda difficult right here.
-
-**What can the "MediaLibraryImporter" module do for me?**
-
-Every vehicle can have unlimited images and this can change every minute of the day.
-We also want to load the images/files into our website, so we have full control over them.
-We can now use this amazing module to automatically import the images to a $mediaGroup. It can also automatically update things in the next load.
-
 **Example code**
 
 ```php
@@ -67,3 +56,14 @@ Then we recommend executing the script which will import new MediaItem, or finds
 $this->get('media_library.import')->execute();
 ```
 > We recommend using the Console command `app/console media_library:import` instead.
+
+**More about the example situation:**
+
+Imagine we are making a connection with a vehicles API, which returns all current vehicles data + URL's to their images.
+But now you want to create a "lightbox" or "slider" in your website using all those images and creating your own thumbnails... This can get kinda difficult right here.
+
+**What can the "MediaLibraryImporter" module do for me?**
+
+Every vehicle can have unlimited images and this can change every minute of the day.
+We also want to load the images/files into our website, so we have full control over them.
+We can now use this amazing module to automatically import the images to a $mediaGroup. It can also automatically update things in the next load.
