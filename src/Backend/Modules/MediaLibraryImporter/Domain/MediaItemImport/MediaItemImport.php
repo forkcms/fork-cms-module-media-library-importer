@@ -5,6 +5,7 @@ namespace Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport;
 use Backend\Modules\MediaLibrary\Domain\MediaFolder\MediaFolder;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
 use Backend\Modules\MediaLibrary\Domain\MediaItem\MediaItem;
+use Backend\Modules\MediaLibrary\Domain\MediaItem\StorageType;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -184,8 +185,11 @@ class MediaItemImport
      * @param MediaFolder $mediaFolder
      * @param int $userId
      */
-    public function changeStatusToImported(string $path, MediaFolder $mediaFolder, int $userId)
-    {
+    public function changeStatusToImported(
+        string $path,
+        MediaFolder $mediaFolder,
+        int $userId
+    ) {
         $this->mediaItem = MediaItem::createFromLocalStorageType(
             $path,
             $mediaFolder,

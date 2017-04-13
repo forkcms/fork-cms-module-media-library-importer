@@ -121,6 +121,7 @@ class ExecuteMediaItemImportHandler
      * @param MediaItemImport $mediaItemImport
      * @param MediaItem|null $mediaItem
      * @return bool
+     * @throws MediaImportFailed
      */
     private function isMatchingAlreadyExistingMediaItem(
         MediaItemImport $mediaItemImport,
@@ -130,14 +131,26 @@ class ExecuteMediaItemImportHandler
             return false;
         }
 
-        // We check if our existing MediaItem file matches the new one we received
-        if (filesize($mediaItem->getAbsoluteWebPath()) !== filesize($mediaItemImport->getPath())
-            && md5_file($mediaItem->getAbsoluteWebPath()) !== md5_file($mediaItemImport->getPath())
-        ) {
-            return false;
+        try {
+            $newFilesize = filesize($mediaItemImport->getPath());
+            $newMd5 = md5_file($mediaItemImport->getPath());
+        } catch (\Exception $e) {
+            throw MediaImportFailed::forPath($mediaItemImport->getPath());
         }
 
-        return true;
+        try {
+            $oldFilesize = filesize($mediaItem->getAbsoluteWebPath());
+            $oldMd5 = md5_file($mediaItem->getAbsoluteWebPath());
+        } catch (\Exception $e) {
+            throw MediaImportFailed::forPath($mediaItem->getAbsoluteWebPath());
+        }
+
+        // We check if our existing MediaItem file matches the new one we received
+        if ($oldFilesize === $newFilesize && $oldMd5 === $newMd5) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
