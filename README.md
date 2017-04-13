@@ -53,7 +53,7 @@ foreach ($vehicles as $vehicle) {
     }
 }
 
-// Handle the MediaGroup create
+// Handle the MediaGroupImport Update
 $this->get('command_bus')->handle($mediaGroupImportCommand);
 
 // We can now set the $mediaGroup in our vehicle
