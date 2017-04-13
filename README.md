@@ -1,9 +1,8 @@
-# fork-cms-module-media-library-importer
+# Fork CMS MediaLibraryImporter Module
 
-[![Build Status](https://travis-ci.org/forkcms/fork-cms-module-media-library-importer.svg?branch=testsuite)](https://travis-ci.org/forkcms/fork-cms-module-media-library-importer)
 [![Latest Stable Version](https://poser.pugx.org/forkcms/fork-cms-module-media-library-importer/v/stable.svg)](https://packagist.org/packages/forkcms/fork-cms-module-media-library-importer)
 [![License](https://poser.pugx.org/forkcms/forkcms/license.svg)](https://packagist.org/packages/forkcms/fork-cms-module-media-library-importer)
-[![Code Coverage](https://scrutinizer-ci.com/g/forkcms/fork-cms-module-media-library-importer/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/forkcms/fork-cms-module-media-library-importer/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/forkcms/fork-cms-module-media-library-importer/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/forkcms/fork-cms-module-media-library-importer/?branch=master)
 [![Slack Status](https://fork-cms.herokuapp.com/badge.svg)](https://fork-cms.herokuapp.com/)
 
 [WIP] This MediaLibraryImporter Module is created to help you import mass MediaItem items.
