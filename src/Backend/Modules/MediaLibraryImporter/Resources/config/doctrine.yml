@@ -1,0 +1,14 @@
+doctrine:
+  dbal:
+    types:
+      uuid: Ramsey\Uuid\Doctrine\UuidType
+      media_item_import_status: Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport\StatusDBALType
+      media_item_import_method: Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport\MethodDBALType
+  orm:
+    mappings:
+      media_item_import:
+        type: annotation
+        is_bundle: false
+        dir: %kernel.root_dir%/../src/Backend/Modules/MediaLibraryImporter/Domain/MediaItemImport
+        alias: MediaLibraryImporterMediaItemImport
+        prefix: Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport

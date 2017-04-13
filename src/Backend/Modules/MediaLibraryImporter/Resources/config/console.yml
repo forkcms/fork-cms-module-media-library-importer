@@ -1,0 +1,5 @@
+services:
+    media_library.console.import:
+        class: Backend\Modules\MediaLibraryImporter\Console\ImportCommand
+        tags:
+            -  { name: console.command }

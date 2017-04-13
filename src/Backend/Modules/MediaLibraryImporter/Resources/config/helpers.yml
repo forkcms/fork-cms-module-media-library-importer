@@ -1,0 +1,6 @@
+services:
+    media_library.helper.import:
+        class: Backend\Modules\MediaLibraryImporter\Helper\ImportHelper
+        arguments:
+            - "@command_bus"
+            - "@media_library.repository.item_import"

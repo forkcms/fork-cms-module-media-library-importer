@@ -1,0 +1,6 @@
+services:
+    media_library.repository.item_import:
+        class: Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport\MediaItemImportRepository
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments:
+            - Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport\MediaItemImport

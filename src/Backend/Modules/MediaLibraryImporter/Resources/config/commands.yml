@@ -1,0 +1,32 @@
+services:
+  # MediaGroup
+  media_library.handler.create_import_for_new_media_group:
+    class: Backend\Modules\MediaLibraryImporter\Domain\MediaGroupImport\Command\CreateImportForNewMediaGroupHandler
+    arguments:
+      - "@media_library.repository.group"
+      - "@media_library.repository.item_import"
+    tags:
+      - { name: command_handler, handles: Backend\Modules\MediaLibraryImporter\Domain\MediaGroupImport\Command\CreateImportForNewMediaGroup }
+  media_library.handler.create_import_for_existing_media_group:
+    class: Backend\Modules\MediaLibraryImporter\Domain\MediaGroupImport\Command\CreateImportForExistingMediaGroupHandler
+    arguments:
+      - "@media_library.repository.item_import"
+    tags:
+      - { name: command_handler, handles: Backend\Modules\MediaLibraryImporter\Domain\MediaGroupImport\Command\CreateImportForExistingMediaGroup }
+  media_library.handler.update_media_group_after_import:
+    class: Backend\Modules\MediaLibraryImporter\Domain\MediaGroupImport\Command\UpdateMediaGroupAfterImportHandler
+    arguments:
+      - "@media_library.repository.group_item"
+    tags:
+      - { name: command_handler, handles: Backend\Modules\MediaLibraryImporter\Domain\MediaGroupImport\Command\UpdateMediaGroupAfterImport }
+  # MediaItem
+  media_library.handler.execute_media_item_import:
+    class: Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport\Command\ExecuteMediaItemImportHandler
+    arguments:
+      - "@media_library.manager.file"
+      - "@media_library.storage.local"
+      - "@media_library.repository.folder"
+      - "@media_library.repository.item_import"
+      - "@media_library.repository.item"
+    tags:
+      - { name: command_handler, handles: Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport\Command\ExecuteMediaItemImport }
