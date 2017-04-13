@@ -22,7 +22,9 @@ final class Method
     private function __construct(string $method)
     {
         if (!in_array($method, self::POSSIBLE_VALUES, true)) {
-            throw new \InvalidArgumentException('Invalid value for possible MediaItemImport method.');
+            throw new \InvalidArgumentException(
+                'Invalid value for possible MediaItemImport method. Possible values; ' . implode(',', self::POSSIBLE_VALUES)
+            );
         }
 
         $this->method = $method;

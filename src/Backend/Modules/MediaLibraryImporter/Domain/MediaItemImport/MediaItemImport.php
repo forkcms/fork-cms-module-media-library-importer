@@ -63,7 +63,8 @@ class MediaItemImport
      * @ORM\JoinColumn(
      *      name="mediaGroupId",
      *      referencedColumnName="id",
-     *      onDelete="cascade"
+     *      onDelete="cascade",
+     *      nullable=false
      * )
      */
     protected $mediaGroup;
@@ -133,8 +134,9 @@ class MediaItemImport
      * @param MediaItemImportDataTransferObject $mediaItemDataTransferObject
      * @return MediaItemImport
      */
-    public static function fromDataTransferObject(MediaItemImportDataTransferObject $mediaItemDataTransferObject): MediaItemImport
-    {
+    public static function fromDataTransferObject(
+        MediaItemImportDataTransferObject $mediaItemDataTransferObject
+    ): MediaItemImport {
         return new self(
             $mediaItemDataTransferObject->mediaGroup,
             $mediaItemDataTransferObject->path,

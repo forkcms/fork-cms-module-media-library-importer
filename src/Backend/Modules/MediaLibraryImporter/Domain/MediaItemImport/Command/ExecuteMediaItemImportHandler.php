@@ -126,12 +126,13 @@ class ExecuteMediaItemImportHandler
         MediaItemImport $mediaItemImport,
         MediaItem $mediaItem = null
     ): bool {
-        if (!$mediaItem instanceof MediaItem) {
+        if ($mediaItem === null) {
             return false;
         }
 
-        if (filesize($mediaItem->getAbsoluteWebPath()) !== $mediaItemImport->getPath()
-            && md5_file($mediaItem->getAbsoluteWebPath()) !== $mediaItemImport->getPath()
+        // We check if our existing MediaItem file matches the new one we received
+        if (filesize($mediaItem->getAbsoluteWebPath()) !== filesize($mediaItemImport->getPath())
+            && md5_file($mediaItem->getAbsoluteWebPath()) !== md5_file($mediaItemImport->getPath())
         ) {
             return false;
         }

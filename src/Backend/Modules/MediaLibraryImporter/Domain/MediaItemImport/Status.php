@@ -32,7 +32,9 @@ final class Status
     private function __construct(string $status)
     {
         if (!in_array($status, self::POSSIBLE_VALUES, true)) {
-            throw new \InvalidArgumentException('Invalid value for the MediaItemImport status.');
+            throw new \InvalidArgumentException(
+                'Invalid value for the MediaItemImport status. Possible values; ' . implode(',', self::POSSIBLE_VALUES)
+            );
         }
 
         $this->status = $status;
@@ -40,7 +42,7 @@ final class Status
 
     /**
      * @param string $status
-     * @return self
+     * @return Status
      */
     public static function fromString(string $status): self
     {
@@ -69,7 +71,7 @@ final class Status
     }
 
     /**
-     * @return self
+     * @return Status
      */
     public static function queued(): self
     {
@@ -85,7 +87,7 @@ final class Status
     }
 
     /**
-     * @return self
+     * @return Status
      */
     public static function imported(): self
     {
@@ -101,7 +103,7 @@ final class Status
     }
 
     /**
-     * @return self
+     * @return Status
      */
     public static function existing(): self
     {
@@ -117,7 +119,7 @@ final class Status
     }
 
     /**
-     * @return self
+     * @return Status
      */
     public static function error(): self
     {
