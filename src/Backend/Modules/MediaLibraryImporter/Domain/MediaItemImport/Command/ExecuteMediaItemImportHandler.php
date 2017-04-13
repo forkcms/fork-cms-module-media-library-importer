@@ -160,6 +160,8 @@ class ExecuteMediaItemImportHandler
                 while ($tryDownloading) {
                     $downloadCounter += 1;
 
+                    // ToDo: add try/catch here, so instead of trying once and throwing exception
+                    // we should keep in the while loop, until we find the trying is enough
                     if (file_put_contents($destinationPath, fopen($mediaItemImport->getPath(), 'r'))) {
                         $tryDownloading = false;
                         continue;
