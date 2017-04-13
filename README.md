@@ -1,4 +1,11 @@
 # fork-cms-module-media-library-importer
+
+[![Build Status](https://travis-ci.org/forkcms/fork-cms-module-media-library-importer.svg?branch=testsuite)](https://travis-ci.org/forkcms/fork-cms-module-media-library-importer)
+[![Latest Stable Version](https://poser.pugx.org/forkcms/fork-cms-module-media-library-importer/v/stable.svg)](https://packagist.org/packages/forkcms/fork-cms-module-media-library-importer)
+[![License](https://poser.pugx.org/forkcms/forkcms/license.svg)](https://packagist.org/packages/forkcms/fork-cms-module-media-library-importer)
+[![Code Coverage](https://scrutinizer-ci.com/g/forkcms/fork-cms-module-media-library-importer/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/forkcms/fork-cms-module-media-library-importer/?branch=master)
+[![Slack Status](https://fork-cms.herokuapp.com/badge.svg)](https://fork-cms.herokuapp.com/)
+
 [WIP] This MediaLibraryImporter Module is created to help you import mass MediaItem items.
 
 > Sometimes, you have to import images and files from external sources like f.e.; API's, .xml files, .csv files, ... With this module you can easily write some code and everything will be automatically updated.
@@ -7,14 +14,12 @@
 
 Use at your own risk, this module isn't finished yet and still in development.
 
-## Usage
-
 ## Installation
 
 * Copy/paste the `src/Backend/Modules/MediaLibraryImporter` folder to your Fork CMS 5.
 * Install the "MediaLibraryImporter" module in the backend (Note: "MediaLibrary" should be installed also).
 
-### Example
+## Example
 
 **Example code**
 
