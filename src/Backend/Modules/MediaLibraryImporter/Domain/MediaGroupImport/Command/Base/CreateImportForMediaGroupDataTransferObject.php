@@ -37,7 +37,7 @@ class CreateImportForMediaGroupDataTransferObject
     public function add(MediaItemImportDataTransferObject $mediaItemImportDataTransferObject)
     {
         if ($this->hasExistingMediaGroup()) {
-            $mediaItemImportDataTransferObject->mediaGroup = $this->mediaGroupEntity;
+            $mediaItemImportDataTransferObject->setMediaGroup($this->mediaGroupEntity);
         }
 
         $this->mediaItemImportDataTransferObjects[] = $mediaItemImportDataTransferObject;

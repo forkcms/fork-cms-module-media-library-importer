@@ -138,7 +138,7 @@ class MediaItemImport
         MediaItemImportDataTransferObject $mediaItemDataTransferObject
     ): MediaItemImport {
         return new self(
-            $mediaItemDataTransferObject->mediaGroup,
+            $mediaItemDataTransferObject->getMediaGroup(),
             $mediaItemDataTransferObject->path,
             $mediaItemDataTransferObject->sequence,
             $mediaItemDataTransferObject->method

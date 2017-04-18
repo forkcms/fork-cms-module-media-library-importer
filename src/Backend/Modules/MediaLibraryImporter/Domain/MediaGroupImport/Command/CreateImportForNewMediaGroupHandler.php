@@ -51,7 +51,7 @@ class CreateImportForNewMediaGroupHandler
     {
         foreach ($dataTransferObjects as $dataTransferObject) {
             // We must set the media group
-            $dataTransferObject->mediaGroup = $mediaGroup;
+            $dataTransferObject->setMediaGroup($mediaGroup);
 
             // Import mediaItemImport
             $this->mediaItemImportRepository->add(MediaItemImport::fromDataTransferObject($dataTransferObject));

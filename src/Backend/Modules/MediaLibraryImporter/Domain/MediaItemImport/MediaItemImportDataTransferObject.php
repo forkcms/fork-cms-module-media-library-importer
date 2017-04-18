@@ -9,8 +9,8 @@ class MediaItemImportDataTransferObject
     /** @var MediaItemImport|null */
     private $mediaItemImport;
 
-    /** @var MediaGroup|null */
-    public $mediaGroup;
+    /** @var MediaGroup */
+    private $mediaGroup;
 
     /** @var string */
     public $path;
@@ -50,5 +50,21 @@ class MediaItemImportDataTransferObject
     public function setMediaItemImport(MediaItemImport $mediaItemImport)
     {
         $this->mediaItemImport = $mediaItemImport;
+    }
+
+    /**
+     * @return MediaGroup
+     */
+    public function getMediaGroup(): MediaGroup
+    {
+        return $this->mediaGroup;
+    }
+
+    /**
+     * @param MediaGroup $mediaGroup
+     */
+    public function setMediaGroup(MediaGroup $mediaGroup)
+    {
+        $this->mediaGroup = $mediaGroup;
     }
 }
