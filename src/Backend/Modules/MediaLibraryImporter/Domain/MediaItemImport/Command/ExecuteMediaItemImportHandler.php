@@ -180,12 +180,12 @@ class ExecuteMediaItemImportHandler
     }
 
     /**
-     * @param MediaItemImport $mediaItemImport
      * @param MediaItem $mediaItem
+     * @param MediaItemImport $mediaItemImport
      * @return bool
      * @throws MediaImportFailed
      */
-    private function isMatchingAlreadyExistingMediaItem(MediaItemImport $mediaItemImport, MediaItem $mediaItem): bool
+    private function isMatchingAlreadyExistingMediaItem(MediaItem $mediaItem, MediaItemImport $mediaItemImport): bool
     {
         $oldPath = $mediaItem->getAbsoluteWebPath();
         $newPath = $mediaItemImport->getPath();
@@ -217,7 +217,7 @@ class ExecuteMediaItemImportHandler
         }
 
         // No matching MediaItem found
-        if (!$this->isMatchingAlreadyExistingMediaItem($mediaItemImport, $existingMediaItem)) {
+        if (!$this->isMatchingAlreadyExistingMediaItem($existingMediaItem, $mediaItemImport)) {
             return false;
         }
 
