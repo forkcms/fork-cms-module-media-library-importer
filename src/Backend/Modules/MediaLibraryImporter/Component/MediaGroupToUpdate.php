@@ -33,7 +33,9 @@ final class MediaGroupToUpdate
     public function addMediaItemImport(MediaItemImport $mediaItemImport)
     {
         $this->addConnectedItem($mediaItemImport->getSequence(), $mediaItemImport->getMediaItem());
-        $this->checkForChanges($mediaItemImport);
+        if ($this->hasChangesInMediaItemImport($mediaItemImport)) {
+            $this->hasChanges = true;
+        }
     }
 
     /**
@@ -43,30 +45,6 @@ final class MediaGroupToUpdate
     private function addConnectedItem(int $sequence, MediaItem $mediaItem)
     {
         $this->connectedItems[$sequence] = $mediaItem;
-    }
-
-    /**
-     * @param MediaItemImport $mediaItemImport
-     */
-    private function checkForChanges(MediaItemImport $mediaItemImport)
-    {
-        if ($mediaItemImport->getMediaItem() === null) {
-            return;
-        }
-
-        // When imported, we do have changes
-        if ($mediaItemImport->getStatus()->isImported()) {
-            $this->hasChanges = true;
-
-            return;
-        }
-
-        // When status == "existing", we must check other other variables
-        if ($mediaItemImport->getStatus()->isExisting()
-            && $this->hasChangedConnectedItems($this->mediaGroup->getConnectedItems(), $mediaItemImport)
-        ) {
-            $this->hasChanges = true;
-        }
     }
 
     /**
@@ -100,13 +78,34 @@ final class MediaGroupToUpdate
     }
 
     /**
+     * @param MediaItemImport $mediaItemImport
+     * @return bool
+     */
+    private function hasChangesInMediaItemImport(MediaItemImport $mediaItemImport): bool
+    {
+        if ($mediaItemImport->getMediaItem() === null) {
+            return false;
+        }
+
+        // When imported, we do have changes
+        if ($mediaItemImport->getStatus()->isImported()) {
+            return true;
+        }
+
+        // When status == "existing", we must check other other variables
+        return ($mediaItemImport->getStatus()->isExisting()
+            && $this->hasChangesInConnectedItems($this->mediaGroup->getConnectedItems(), $mediaItemImport)
+        );
+    }
+
+    /**
      * Has changed connected items check for possible changes
      *
      * @param Collection $connectedItems
      * @param MediaItemImport $mediaItemImport
      * @return bool
      */
-    private function hasChangedConnectedItems(
+    private function hasChangesInConnectedItems(
         Collection $connectedItems,
         MediaItemImport $mediaItemImport
     ): bool {
