@@ -6,8 +6,9 @@ use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
 use Backend\Modules\MediaLibrary\Domain\MediaGroupMediaItem\MediaGroupMediaItem;
 use Backend\Modules\MediaLibrary\Domain\MediaItem\MediaItem;
 use Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport\MediaItemImport;
+use Doctrine\Common\Collections\Collection;
 
-class MediaGroupToUpdate
+final class MediaGroupToUpdate
 {
     /** @var MediaGroup */
     protected $mediaGroup;
@@ -27,24 +28,45 @@ class MediaGroupToUpdate
     }
 
     /**
-     * @return MediaGroup
+     * @param MediaItemImport $mediaItemImport
      */
-    public function getMediaGroup(): MediaGroup
+    public function addMediaItemImport(MediaItemImport $mediaItemImport)
     {
-        return $this->mediaGroup;
+        $this->addConnectedItem($mediaItemImport->getSequence(), $mediaItemImport->getMediaItem());
+        $this->checkForChanges($mediaItemImport);
     }
 
     /**
      * @param int $sequence
-     * @param MediaItem|null $mediaItem
+     * @param MediaItem $mediaItem
      */
-    public function addConnectedItem(int $sequence, MediaItem $mediaItem = null)
+    private function addConnectedItem(int $sequence, MediaItem $mediaItem)
     {
-        if ($mediaItem === null) {
+        $this->connectedItems[$sequence] = $mediaItem;
+    }
+
+    /**
+     * @param MediaItemImport $mediaItemImport
+     */
+    private function checkForChanges(MediaItemImport $mediaItemImport)
+    {
+        if ($mediaItemImport->getMediaItem() === null) {
             return;
         }
 
-        $this->connectedItems[$sequence] = $mediaItem;
+        // When imported, we do have changes
+        if ($mediaItemImport->getStatus()->isImported()) {
+            $this->hasChanges = true;
+
+            return;
+        }
+
+        // When status == "existing", we must check other other variables
+        if ($mediaItemImport->getStatus()->isExisting()
+            && $this->hasChangedConnectedItems($this->mediaGroup->getConnectedItems(), $mediaItemImport)
+        ) {
+            $this->hasChanges = true;
+        }
     }
 
     /**
@@ -62,39 +84,11 @@ class MediaGroupToUpdate
     }
 
     /**
-     * @param MediaItemImport $mediaItemImport
+     * @return MediaGroup
      */
-    public function checkForChanges(MediaItemImport $mediaItemImport)
+    public function getMediaGroup(): MediaGroup
     {
-        if ($mediaItemImport->getMediaItem() === null) {
-            return;
-        }
-
-        // When imported, we do have changes
-        if ($mediaItemImport->getStatus()->isImported()) {
-            $this->hasChanges = true;
-
-            return;
-        }
-
-        // When status == "existing", but sequence of MediaGroupMediaItem has changed
-        if ($mediaItemImport->getStatus()->isExisting()) {
-            $arrayWithChanges = $this->mediaGroup->getConnectedItems()->filter(function (MediaGroupMediaItem $connectedItem) use ($mediaItemImport) {
-                if ($connectedItem->getItem()->getId() !== $mediaItemImport->getMediaItem()->getId()) {
-                    return false;
-                }
-
-                if ($connectedItem->getSequence() !== $mediaItemImport->getSequence()) {
-                    return true;
-                }
-
-                return false;
-            });
-
-            if (!empty($arrayWithChanges)) {
-                $this->hasChanges = true;
-            }
-        }
+        return $this->mediaGroup;
     }
 
     /**
@@ -103,5 +97,33 @@ class MediaGroupToUpdate
     public function hasChanges(): bool
     {
         return $this->hasChanges;
+    }
+
+    /**
+     * Has changed connected items check for possible changes
+     *
+     * @param Collection $connectedItems
+     * @param MediaItemImport $mediaItemImport
+     * @return bool
+     */
+    private function hasChangedConnectedItems(
+        Collection $connectedItems,
+        MediaItemImport $mediaItemImport
+    ): bool {
+        $arrayWithChanges = $connectedItems->filter(function (MediaGroupMediaItem $connectedItem) use ($mediaItemImport) {
+            // Stop here, because ID is not equal
+            if ($connectedItem->getItem()->getId() !== $mediaItemImport->getMediaItem()->getId()) {
+                return false;
+            }
+
+            // Stop here, because sequence equals
+            if ($connectedItem->getSequence() === $mediaItemImport->getSequence()) {
+                return false;
+            }
+
+            return true;
+        });
+
+        return !empty($arrayWithChanges);
     }
 }

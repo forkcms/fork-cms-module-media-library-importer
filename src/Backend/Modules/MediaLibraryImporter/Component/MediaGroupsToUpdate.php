@@ -5,32 +5,42 @@ namespace Backend\Modules\MediaLibraryImporter\Component;
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
 use Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport\MediaItemImport;
 
-class MediaGroupsToUpdate
+final class MediaGroupsToUpdate
 {
-    /** @var array */
-    protected $mediaGroups = [];
+    /** @var MediaGroupToUpdate[] */
+    private $mediaGroups = [];
 
     /**
      * @param MediaItemImport $mediaItemImport
      */
     public function add(MediaItemImport $mediaItemImport)
     {
-        /** @var MediaGroup $mediaGroup */
-        $mediaGroup = $mediaItemImport->getMediaGroup();
-        $mediaGroupId = (string) $mediaItemImport->getMediaGroup()->getId();
+        /** @var MediaGroupToUpdate $mediaGroupToUpdate */
+        $mediaGroupToUpdate = $this->get($mediaItemImport->getMediaGroup());
 
+        // Stop here, because no MediaItem found
+        if ($mediaItemImport->getMediaItem() === null) {
+            return;
+        }
+
+        $mediaGroupToUpdate->addMediaItemImport($mediaItemImport);
+    }
+
+    /**
+     * @param MediaGroup $mediaGroup
+     * @return MediaGroupToUpdate
+     */
+    private function get(MediaGroup $mediaGroup): MediaGroupToUpdate
+    {
+        /** @var string $mediaGroupId */
+        $mediaGroupId = (string) $mediaGroup->getId();
+
+        // If not yet set, set MediaGroupToUpdate
         if (!isset($this->mediaGroups[$mediaGroupId])) {
             $this->mediaGroups[$mediaGroupId] = new MediaGroupToUpdate($mediaGroup);
         }
 
-        // Add connected item
-        $this->mediaGroups[$mediaGroupId]->addConnectedItem(
-            $mediaItemImport->getSequence(),
-            $mediaItemImport->getMediaItem()
-        );
-
-        // Check for changes
-        $this->mediaGroups[$mediaGroupId]->checkForChanges($mediaItemImport);
+        return $this->mediaGroups[$mediaGroupId];
     }
 
     /**
