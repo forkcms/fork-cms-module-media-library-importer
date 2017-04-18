@@ -212,7 +212,7 @@ class ExecuteMediaItemImportHandler
             return false;
         }
 
-        // Change status because we found existing MediaItem
+        // Change status because we found matching MediaItem
         $mediaItemImport->changeStatusToExisting($existingMediaItem);
 
         return true;
