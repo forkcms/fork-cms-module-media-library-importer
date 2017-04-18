@@ -68,6 +68,136 @@ class ExecuteMediaItemImportHandler
     }
 
     /**
+     * @param MediaItemImport $mediaItemImport
+     * @return MediaItem|null
+     */
+    private function findExistingMediaItem(MediaItemImport $mediaItemImport)
+    {
+        /** @var MediaItemImport|null $existingMediaItemImport */
+        $existingMediaItemImport = $this->mediaItemImportRepository->findExistingImported(
+            $mediaItemImport->getMediaGroup(),
+            $mediaItemImport->getPath()
+        );
+
+        if (!$existingMediaItemImport instanceof MediaItemImport) {
+            return null;
+        }
+
+        return $existingMediaItemImport->getMediaItem();
+    }
+
+    /**
+     * @param MediaItemImport $mediaItemImport
+     * @return string
+     */
+    private function getDestinationPath(MediaItemImport $mediaItemImport): string
+    {
+        // Define upload dir
+        $uploadDir = $this->localStorageProvider->getUploadRootDir() . '/' . $this->fileManager->getNextShardingFolder();
+
+        // Generate folder if not exists
+        $this->fileManager->createFolder($uploadDir);
+
+        // Generate filename which doesn't exist yet in our media library
+        $newName = $this->fileManager->getUniqueFileName(
+            $uploadDir,
+            basename($mediaItemImport->getPath())
+        );
+
+        return $uploadDir . '/' . $newName;
+    }
+
+    /**
+     * @param $path
+     * @return string
+     * @throws MediaImportFailed
+     */
+    private function getFileSize($path)
+    {
+        try {
+            return filesize($path);
+        } catch (\Exception $e) {
+            throw MediaImportFailed::forPath($path);
+        }
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     * @throws MediaImportFailed
+     */
+    private function getMd5($path)
+    {
+        try {
+            return md5_file($path);
+        } catch (\Exception $e) {
+            throw MediaImportFailed::forPath($path);
+        }
+    }
+
+    /**
+     * @param MediaItemImport $mediaItemImport
+     * @param string $destinationPath
+     * @throws MediaImportFailed
+     */
+    private function importMedia(MediaItemImport $mediaItemImport, string $destinationPath)
+    {
+        switch ($mediaItemImport->getMethod()->getMethod()) {
+            case Method::COPY:
+                $this->fileManager->getFilesystem()->copy($mediaItemImport->getPath(), $destinationPath);
+                break;
+            case Method::MOVE:
+                $this->fileManager->rename($mediaItemImport->getPath(), $destinationPath);
+                break;
+            case Method::DOWNLOAD:
+                $tryDownloading = true;
+                $downloadCounter = 0;
+                while ($tryDownloading) {
+                    $downloadCounter += 1;
+
+                    // ToDo: add try/catch here, so instead of trying once and throwing exception
+                    // we should keep in the while loop, until we find the trying is enough
+                    if (file_put_contents($destinationPath, fopen($mediaItemImport->getPath(), 'r'))) {
+                        $tryDownloading = false;
+                        continue;
+                    }
+
+                    if ($downloadCounter === 5) {
+                        throw MediaImportFailed::forPath($mediaItemImport->getPath());
+                    }
+                }
+                break;
+        }
+    }
+
+    /**
+     * @param MediaItemImport $mediaItemImport
+     * @param MediaItem|null $mediaItem
+     * @return bool
+     * @throws MediaImportFailed
+     */
+    private function isMatchingAlreadyExistingMediaItem(
+        MediaItemImport $mediaItemImport,
+        MediaItem $mediaItem = null
+    ): bool {
+        if ($mediaItem === null) {
+            return false;
+        }
+
+        $oldPath = $mediaItem->getAbsoluteWebPath();
+        $newPath = $mediaItemImport->getPath();
+
+        // We check if our existing MediaItem file matches the new one we received
+        if ($this->getFileSize($oldPath) === $this->getFileSize($newPath)
+            && $this->getMd5($oldPath) === $this->getMd5($newPath)
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * We find an eventually existing media item and if it matches exactly, we are going to use it.
      *
      * @param MediaItemImport $mediaItemImport
@@ -115,116 +245,5 @@ class ExecuteMediaItemImportHandler
         } catch (\Exception $e) {
             $mediaItemImport->changeStatusToError($e->getMessage());
         }
-    }
-
-    /**
-     * @param MediaItemImport $mediaItemImport
-     * @param MediaItem|null $mediaItem
-     * @return bool
-     * @throws MediaImportFailed
-     */
-    private function isMatchingAlreadyExistingMediaItem(
-        MediaItemImport $mediaItemImport,
-        MediaItem $mediaItem = null
-    ): bool {
-        if ($mediaItem === null) {
-            return false;
-        }
-
-        try {
-            $newFilesize = filesize($mediaItemImport->getPath());
-            $newMd5 = md5_file($mediaItemImport->getPath());
-        } catch (\Exception $e) {
-            throw MediaImportFailed::forPath($mediaItemImport->getPath());
-        }
-
-        try {
-            $oldFilesize = filesize($mediaItem->getAbsoluteWebPath());
-            $oldMd5 = md5_file($mediaItem->getAbsoluteWebPath());
-        } catch (\Exception $e) {
-            throw MediaImportFailed::forPath($mediaItem->getAbsoluteWebPath());
-        }
-
-        // We check if our existing MediaItem file matches the new one we received
-        if ($oldFilesize === $newFilesize && $oldMd5 === $newMd5) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param MediaItemImport $mediaItemImport
-     * @param string $destinationPath
-     * @throws MediaImportFailed
-     */
-    private function importMedia(MediaItemImport $mediaItemImport, string $destinationPath)
-    {
-        switch ($mediaItemImport->getMethod()->getMethod()) {
-            case Method::COPY:
-                $this->fileManager->getFilesystem()->copy($mediaItemImport->getPath(), $destinationPath);
-                break;
-            case Method::MOVE:
-                $this->fileManager->rename($mediaItemImport->getPath(), $destinationPath);
-                break;
-            case Method::DOWNLOAD:
-                $tryDownloading = true;
-                $downloadCounter = 0;
-                while ($tryDownloading) {
-                    $downloadCounter += 1;
-
-                    // ToDo: add try/catch here, so instead of trying once and throwing exception
-                    // we should keep in the while loop, until we find the trying is enough
-                    if (file_put_contents($destinationPath, fopen($mediaItemImport->getPath(), 'r'))) {
-                        $tryDownloading = false;
-                        continue;
-                    }
-
-                    if ($downloadCounter === 5) {
-                        throw MediaImportFailed::forPath($mediaItemImport->getPath());
-                    }
-                }
-                break;
-        }
-    }
-
-    /**
-     * @param MediaItemImport $mediaItemImport
-     * @return MediaItem|null
-     */
-    private function findExistingMediaItem(MediaItemImport $mediaItemImport)
-    {
-        /** @var MediaItemImport|null $existingMediaItemImport */
-        $existingMediaItemImport = $this->mediaItemImportRepository->findExistingImported(
-            $mediaItemImport->getMediaGroup(),
-            $mediaItemImport->getPath()
-        );
-
-        if (!$existingMediaItemImport instanceof MediaItemImport) {
-            return null;
-        }
-
-        return $existingMediaItemImport->getMediaItem();
-    }
-
-    /**
-     * @param MediaItemImport $mediaItemImport
-     * @return string
-     */
-    private function getDestinationPath(MediaItemImport $mediaItemImport): string
-    {
-        // Define upload dir
-        $uploadDir = $this->localStorageProvider->getUploadRootDir() . '/' . $this->fileManager->getNextShardingFolder();
-
-        // Generate folder if not exists
-        $this->fileManager->createFolder($uploadDir);
-
-        // Generate filename which doesn't exist yet in our media library
-        $newName = $this->fileManager->getUniqueFileName(
-            $uploadDir,
-            basename($mediaItemImport->getPath())
-        );
-
-        return $uploadDir . '/' . $newName;
     }
 }
