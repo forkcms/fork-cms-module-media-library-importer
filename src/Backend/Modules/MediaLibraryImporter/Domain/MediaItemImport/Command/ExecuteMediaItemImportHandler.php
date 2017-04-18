@@ -172,18 +172,12 @@ class ExecuteMediaItemImportHandler
 
     /**
      * @param MediaItemImport $mediaItemImport
-     * @param MediaItem|null $mediaItem
+     * @param MediaItem $mediaItem
      * @return bool
      * @throws MediaImportFailed
      */
-    private function isMatchingAlreadyExistingMediaItem(
-        MediaItemImport $mediaItemImport,
-        MediaItem $mediaItem = null
-    ): bool {
-        if ($mediaItem === null) {
-            return false;
-        }
-
+    private function isMatchingAlreadyExistingMediaItem(MediaItemImport $mediaItemImport, MediaItem $mediaItem): bool
+    {
         $oldPath = $mediaItem->getAbsoluteWebPath();
         $newPath = $mediaItemImport->getPath();
 
@@ -208,14 +202,20 @@ class ExecuteMediaItemImportHandler
         /** @var MediaItem|null $existingMediaItem */
         $existingMediaItem = $this->findExistingMediaItem($mediaItemImport);
 
-        // Existing and matching MediaItem found
-        if ($this->isMatchingAlreadyExistingMediaItem($mediaItemImport, $existingMediaItem)) {
-            $mediaItemImport->changeStatusToExisting($existingMediaItem);
-
-            return true;
+        // No MediaItem found
+        if (!$existingMediaItem instanceof MediaItem) {
+            return false;
         }
 
-        return false;
+        // No matching MediaItem found
+        if (!$this->isMatchingAlreadyExistingMediaItem($mediaItemImport, $existingMediaItem)) {
+            return false;
+        }
+
+        // Change status because we found existing MediaItem
+        $mediaItemImport->changeStatusToExisting($existingMediaItem);
+
+        return true;
     }
 
     /**
