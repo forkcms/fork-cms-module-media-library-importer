@@ -2,6 +2,7 @@
 
 namespace Backend\Modules\MediaLibraryImporter\Helper;
 
+use Backend\Modules\Locale\Actions\Import;
 use Backend\Modules\MediaLibraryImporter\Component\ImportResults;
 use Backend\Modules\MediaLibraryImporter\Component\MediaGroupsToUpdate;
 use Backend\Modules\MediaLibraryImporter\Component\MediaGroupToUpdate;
@@ -42,20 +43,8 @@ class ImportHelper
         /** @var MediaGroupsToUpdate $mediaGroupsToUpdate */
         $mediaGroupsToUpdate = new MediaGroupsToUpdate();
 
-        /** @var array $mediaItemImports */
-        $mediaItemImports = $this->mediaItemImportRepository->findAllForImport();
-
-        /** @var MediaItemImport $mediaItemImport */
-        foreach ($mediaItemImports as $mediaItemImport) {
-            $executeMediaItemImport = $this->executeMediaItemImport($mediaItemImport);
-            $importResults->bumpForMediaItemImport($executeMediaItemImport->getMediaItemImportEntity());
-            $mediaGroupsToUpdate->add($executeMediaItemImport->getMediaItemImportEntity());
-        }
-
-        /** @var MediaGroupToUpdate $mediaGroupToUpdate */
-        foreach ($mediaGroupsToUpdate->getAll() as $mediaGroupToUpdate) {
-            $this->executeMediaGroupUpdate($mediaGroupToUpdate);
-        }
+        $this->executeMediaItemImports($mediaGroupsToUpdate, $importResults);
+        $this->executeMediaGroupsToUpdate($mediaGroupsToUpdate);
 
         return $importResults;
     }
@@ -76,6 +65,25 @@ class ImportHelper
     }
 
     /**
+     * @param MediaGroupsToUpdate $mediaGroupsToUpdate
+     * @param ImportResults $importResults
+     */
+    private function executeMediaItemImports(
+        MediaGroupsToUpdate $mediaGroupsToUpdate,
+        ImportResults $importResults
+    ) {
+        /** @var array $mediaItemImports */
+        $mediaItemImports = $this->mediaItemImportRepository->findAllForImport();
+
+        /** @var MediaItemImport $mediaItemImport */
+        foreach ($mediaItemImports as $mediaItemImport) {
+            $executeMediaItemImport = $this->executeMediaItemImport($mediaItemImport);
+            $importResults->bumpForMediaItemImport($executeMediaItemImport->getMediaItemImportEntity());
+            $mediaGroupsToUpdate->add($executeMediaItemImport->getMediaItemImportEntity());
+        }
+    }
+
+    /**
      * @param MediaGroupToUpdate $mediaGroupToUpdate
      */
     private function executeMediaGroupUpdate(MediaGroupToUpdate $mediaGroupToUpdate)
@@ -92,5 +100,16 @@ class ImportHelper
 
         // Handle the UpdateMediaGroupAfterImport
         $this->commandBus->handle($updateMediaGroup);
+    }
+
+    /**
+     * @param MediaGroupsToUpdate $mediaGroupsToUpdate
+     */
+    private function executeMediaGroupsToUpdate(MediaGroupsToUpdate $mediaGroupsToUpdate)
+    {
+        /** @var MediaGroupToUpdate $mediaGroupToUpdate */
+        foreach ($mediaGroupsToUpdate->getAll() as $mediaGroupToUpdate) {
+            $this->executeMediaGroupUpdate($mediaGroupToUpdate);
+        }
     }
 }
