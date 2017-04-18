@@ -3,7 +3,6 @@
 namespace Backend\Modules\MediaLibraryImporter\Component;
 
 use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
-use Backend\Modules\MediaLibrary\Domain\MediaItem\MediaItem;
 use Backend\Modules\MediaLibraryImporter\Domain\MediaItemImport\MediaItemImport;
 
 class MediaGroupsToUpdate

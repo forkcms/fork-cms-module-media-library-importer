@@ -2,8 +2,6 @@
 
 namespace Backend\Modules\MediaLibraryImporter\Helper;
 
-use Backend\Modules\MediaLibrary\Domain\MediaGroup\MediaGroup;
-use Backend\Modules\MediaLibrary\Domain\MediaItem\MediaItem;
 use Backend\Modules\MediaLibraryImporter\Component\ImportResults;
 use Backend\Modules\MediaLibraryImporter\Component\MediaGroupsToUpdate;
 use Backend\Modules\MediaLibraryImporter\Component\MediaGroupToUpdate;
