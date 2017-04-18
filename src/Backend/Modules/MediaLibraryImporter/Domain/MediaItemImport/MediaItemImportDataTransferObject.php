@@ -21,19 +21,25 @@ class MediaItemImportDataTransferObject
     /** @var Method */
     public $method;
 
+    /** @var string|null */
+    public $title;
+
     /**
      * @param string $path
      * @param int $sequence
      * @param Method $method
+     * @param string|null $title
      */
     public function __construct(
         string $path,
         int $sequence,
-        Method $method
+        Method $method,
+        string $title = null
     ) {
         $this->path = $path;
         $this->sequence = $sequence;
         $this->method = $method;
+        $this->title = $title;
     }
 
     /**

@@ -53,6 +53,13 @@ class MediaItemImport
     protected $path;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $title;
+
+    /**
      * @var MediaGroup
      *
      * @ORM\ManyToOne(
@@ -117,17 +124,20 @@ class MediaItemImport
      * @param string $path
      * @param int $sequence
      * @param Method $method
+     * @param string $title
      */
     private function __construct(
         MediaGroup $mediaGroup,
         string $path,
         int $sequence,
-        Method $method
+        Method $method,
+        string $title = null
     ) {
         $this->mediaGroup = $mediaGroup;
         $this->path = $path;
         $this->sequence = $sequence;
         $this->method = $method;
+        $this->title = $title;
     }
 
     /**
@@ -141,7 +151,8 @@ class MediaItemImport
             $mediaItemDataTransferObject->getMediaGroup(),
             $mediaItemDataTransferObject->path,
             $mediaItemDataTransferObject->sequence,
-            $mediaItemDataTransferObject->method
+            $mediaItemDataTransferObject->method,
+            $mediaItemDataTransferObject->title
         );
     }
 
@@ -180,6 +191,10 @@ class MediaItemImport
         $this->errorMessage = null;
         $this->mediaItem = $mediaItem;
         $this->status = Status::existing();
+
+        if ($this->title !== null && $this->title !== $mediaItem->getTitle()) {
+            $mediaItem->setTitle($this->title);
+        }
     }
 
     /**
@@ -267,6 +282,14 @@ class MediaItemImport
     public function getMediaItem()
     {
         return $this->mediaItem;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
     }
 
     /**
