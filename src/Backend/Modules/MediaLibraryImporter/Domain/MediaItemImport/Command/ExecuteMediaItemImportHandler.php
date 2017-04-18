@@ -69,6 +69,31 @@ class ExecuteMediaItemImportHandler
 
     /**
      * @param MediaItemImport $mediaItemImport
+     * @param string $destinationPath
+     * @throws MediaImportFailed
+     */
+    private function download(MediaItemImport $mediaItemImport, string $destinationPath)
+    {
+        $tryDownloading = true;
+        $downloadCounter = 0;
+        while ($tryDownloading) {
+            $downloadCounter += 1;
+
+            // ToDo: add try/catch here, so instead of trying once and throwing exception
+            // we should keep in the while loop, until we find the trying is enough
+            if (file_put_contents($destinationPath, fopen($mediaItemImport->getPath(), 'r'))) {
+                $tryDownloading = false;
+                continue;
+            }
+
+            if ($downloadCounter === 5) {
+                throw MediaImportFailed::forPath($mediaItemImport->getPath());
+            }
+        }
+    }
+
+    /**
+     * @param MediaItemImport $mediaItemImport
      * @return MediaItem|null
      */
     private function findExistingMediaItem(MediaItemImport $mediaItemImport)
@@ -138,7 +163,6 @@ class ExecuteMediaItemImportHandler
     /**
      * @param MediaItemImport $mediaItemImport
      * @param string $destinationPath
-     * @throws MediaImportFailed
      */
     private function importMedia(MediaItemImport $mediaItemImport, string $destinationPath)
     {
@@ -150,22 +174,7 @@ class ExecuteMediaItemImportHandler
                 $this->fileManager->rename($mediaItemImport->getPath(), $destinationPath);
                 break;
             case Method::DOWNLOAD:
-                $tryDownloading = true;
-                $downloadCounter = 0;
-                while ($tryDownloading) {
-                    $downloadCounter += 1;
-
-                    // ToDo: add try/catch here, so instead of trying once and throwing exception
-                    // we should keep in the while loop, until we find the trying is enough
-                    if (file_put_contents($destinationPath, fopen($mediaItemImport->getPath(), 'r'))) {
-                        $tryDownloading = false;
-                        continue;
-                    }
-
-                    if ($downloadCounter === 5) {
-                        throw MediaImportFailed::forPath($mediaItemImport->getPath());
-                    }
-                }
+                $this->download($mediaItemImport, $destinationPath);
                 break;
         }
     }
