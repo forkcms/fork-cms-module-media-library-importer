@@ -109,7 +109,7 @@ class ExecuteMediaItemImportHandler
 
     /**
      * @param $path
-     * @return string
+     * @return integer
      * @throws MediaImportFailed
      */
     private function getFileSize($path)

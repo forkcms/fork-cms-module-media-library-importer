@@ -163,6 +163,9 @@ class MediaItemImport
         return $this->status;
     }
 
+    /**
+     * @param string $errorMessage
+     */
     public function changeStatusToError(string $errorMessage)
     {
         $this->errorMessage = $errorMessage;
