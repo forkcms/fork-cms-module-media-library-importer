@@ -35,12 +35,13 @@ if ($vehicle->exists()) {
 }
 
 foreach ($vehicles as $vehicle) {
-    foreach ($vehicle->getImages() as $sequence => $imagePath) {
+    foreach ($vehicle->getImages() as $sequence => $image) {
         $mediaGroupImportCommand->add(
             new MediaItemImportDataTransferObject(
-                $imagePath,
+                $image->path,
                 $sequence,
-                Method::copy() // Other possible values are; Method::move() or Method::download()
+                Method::copy() // Other possible values are; Method::move() or Method::download(),
+                $image->title // Optionally
             );
         );
     }
