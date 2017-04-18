@@ -44,7 +44,7 @@ final class Status
      * @param string $status
      * @return Status
      */
-    public static function fromString(string $status): self
+    public static function fromString(string $status): Status
     {
         return new self($status);
     }
@@ -73,7 +73,7 @@ final class Status
     /**
      * @return Status
      */
-    public static function queued(): self
+    public static function queued(): Status
     {
         return new self(self::QUEUED);
     }
@@ -89,7 +89,7 @@ final class Status
     /**
      * @return Status
      */
-    public static function imported(): self
+    public static function imported(): Status
     {
         return new self(self::IMPORTED);
     }
@@ -105,7 +105,7 @@ final class Status
     /**
      * @return Status
      */
-    public static function existing(): self
+    public static function existing(): Status
     {
         return new self(self::EXISTING);
     }
@@ -121,7 +121,7 @@ final class Status
     /**
      * @return Status
      */
-    public static function error(): self
+    public static function error(): Status
     {
         return new self(self::ERROR);
     }
