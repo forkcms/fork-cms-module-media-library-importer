@@ -17,12 +17,6 @@ final class MediaGroupsToUpdate
     {
         /** @var MediaGroupToUpdate $mediaGroupToUpdate */
         $mediaGroupToUpdate = $this->get($mediaItemImport->getMediaGroup());
-
-        // Stop here, because no MediaItem found
-        if ($mediaItemImport->getMediaItem() === null) {
-            return;
-        }
-
         $mediaGroupToUpdate->addMediaItemImport($mediaItemImport);
     }
 

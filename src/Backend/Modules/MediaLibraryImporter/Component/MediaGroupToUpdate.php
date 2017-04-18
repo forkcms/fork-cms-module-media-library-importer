@@ -32,6 +32,11 @@ final class MediaGroupToUpdate
      */
     public function addMediaItemImport(MediaItemImport $mediaItemImport)
     {
+        // Stop here, because no MediaItem found
+        if ($mediaItemImport->getMediaItem() === null) {
+            return;
+        }
+
         $this->addConnectedItem($mediaItemImport->getSequence(), $mediaItemImport->getMediaItem());
         if ($this->hasChangesInMediaItemImport($mediaItemImport)) {
             $this->hasChanges = true;
