@@ -10,18 +10,12 @@ class CreateImportForExistingMediaGroupHandler
     /** @var MediaItemImportRepository */
     protected $mediaItemImportRepository;
 
-    /**
-     * @param MediaItemImportRepository $mediaItemImportRepository
-     */
     public function __construct(MediaItemImportRepository $mediaItemImportRepository)
     {
         $this->mediaItemImportRepository = $mediaItemImportRepository;
     }
 
-    /**
-     * @param CreateImportForExistingMediaGroup $updateMediaGroupImport
-     */
-    public function handle(CreateImportForExistingMediaGroup $updateMediaGroupImport)
+    public function handle(CreateImportForExistingMediaGroup $updateMediaGroupImport): void
     {
         foreach ($updateMediaGroupImport->mediaItemImportDataTransferObjects as $dataTransferObject) {
             $this->mediaItemImportRepository->add(MediaItemImport::fromDataTransferObject($dataTransferObject));

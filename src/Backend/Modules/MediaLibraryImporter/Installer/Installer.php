@@ -11,28 +11,19 @@ use Backend\Core\Installer\ModuleInstaller;
  */
 class Installer extends ModuleInstaller
 {
-    /**
-     * Install the module
-     */
-    public function install()
+    public function install(): void
     {
         $this->addModule('MediaLibraryImporter');
         $this->createEntityTables();
         $this->configureModuleRights();
     }
 
-    /**
-     * Configure module rights
-     */
-    protected function configureModuleRights()
+    protected function configureModuleRights(): void
     {
         $this->setModuleRights(1, $this->getModule());
     }
 
-    /**
-     * Create entity tables
-     */
-    private function createEntityTables()
+    private function createEntityTables(): void
     {
         Model::get('fork.entity.create_schema')->forEntityClasses(
             [

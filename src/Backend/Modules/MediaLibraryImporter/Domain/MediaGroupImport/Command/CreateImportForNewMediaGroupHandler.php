@@ -16,10 +16,6 @@ class CreateImportForNewMediaGroupHandler
     /** @var MediaGroupRepository */
     protected $mediaItemImportRepository;
 
-    /**
-     * @param MediaGroupRepository $mediaGroupRepository
-     * @param MediaItemImportRepository $mediaItemImportRepository
-     */
     public function __construct(
         MediaGroupRepository $mediaGroupRepository,
         MediaItemImportRepository $mediaItemImportRepository
@@ -28,10 +24,7 @@ class CreateImportForNewMediaGroupHandler
         $this->mediaItemImportRepository = $mediaItemImportRepository;
     }
 
-    /**
-     * @param CreateImportForNewMediaGroup $createMediaGroupImport
-     */
-    public function handle(CreateImportForNewMediaGroup $createMediaGroupImport)
+    public function handle(CreateImportForNewMediaGroup $createMediaGroupImport): void
     {
         /** @var MediaGroup $mediaGroup */
         $mediaGroup = MediaGroup::create($createMediaGroupImport->type);
@@ -45,9 +38,9 @@ class CreateImportForNewMediaGroupHandler
 
     /**
      * @param MediaGroup $mediaGroup
-     * @param array|MediaItemImportDataTransferObject[] $dataTransferObjects
+     * @param MediaItemImportDataTransferObject[] $dataTransferObjects
      */
-    private function importMediaItems(MediaGroup $mediaGroup, array $dataTransferObjects)
+    private function importMediaItems(MediaGroup $mediaGroup, array $dataTransferObjects): void
     {
         foreach ($dataTransferObjects as $dataTransferObject) {
             // We must set the media group

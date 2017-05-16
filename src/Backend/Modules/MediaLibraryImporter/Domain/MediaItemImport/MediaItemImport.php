@@ -119,13 +119,6 @@ class MediaItemImport
      */
     protected $errorMessage;
 
-    /**
-     * @param MediaGroup $mediaGroup
-     * @param string $path
-     * @param int $sequence
-     * @param Method $method
-     * @param string $title
-     */
     private function __construct(
         MediaGroup $mediaGroup,
         string $path,
@@ -140,10 +133,6 @@ class MediaItemImport
         $this->title = $title;
     }
 
-    /**
-     * @param MediaItemImportDataTransferObject $mediaItemDataTransferObject
-     * @return MediaItemImport
-     */
     public static function fromDataTransferObject(
         MediaItemImportDataTransferObject $mediaItemDataTransferObject
     ): MediaItemImport {
@@ -156,36 +145,22 @@ class MediaItemImport
         );
     }
 
-    /**
-     * Gets the value of id.
-     *
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return Status
-     */
     public function getStatus(): Status
     {
         return $this->status;
     }
 
-    /**
-     * @param string $errorMessage
-     */
     public function changeStatusToError(string $errorMessage)
     {
         $this->errorMessage = $errorMessage;
         $this->status = Status::error();
     }
 
-    /**
-     * @param MediaItem $mediaItem
-     */
     public function changeStatusToExisting(MediaItem $mediaItem)
     {
         $this->errorMessage = null;
@@ -197,11 +172,6 @@ class MediaItemImport
         }
     }
 
-    /**
-     * @param string $path
-     * @param MediaFolder $mediaFolder
-     * @param int $userId
-     */
     public function changeStatusToImported(
         string $path,
         MediaFolder $mediaFolder,
@@ -218,83 +188,51 @@ class MediaItemImport
         $this->importedOn = new \Datetime();
     }
 
-    /**
-     * @return Method
-     */
     public function getMethod(): Method
     {
         return $this->method;
     }
 
-    /**
-     * @return string
-     */
     public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * @return int
-     */
     public function getSequence(): int
     {
         return $this->sequence;
     }
 
-    /**
-     * Gets the value of createdOn.
-     *
-     * @return \DateTime
-     */
     public function getCreatedOn(): \DateTime
     {
         return $this->createdOn;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getImportedOn(): \DateTime
     {
         return $this->importedOn;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getExecutedOn(): \DateTime
     {
         return $this->executedOn;
     }
 
-    /**
-     * @return MediaGroup
-     */
     public function getMediaGroup(): MediaGroup
     {
         return $this->mediaGroup;
     }
 
-    /**
-     * @return MediaItem|null
-     */
-    public function getMediaItem()
+    public function getMediaItem(): ?MediaItem
     {
         return $this->mediaItem;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getErrorMessage(): string
     {
         return $this->errorMessage;

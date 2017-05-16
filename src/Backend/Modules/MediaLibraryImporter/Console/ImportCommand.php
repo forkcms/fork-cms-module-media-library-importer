@@ -13,10 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ImportCommand extends ContainerAwareCommand
 {
-    /**
-     * Configure
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('media_library:import')
@@ -24,12 +21,7 @@ class ImportCommand extends ContainerAwareCommand
         ;
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return void
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln('<info>Starting the MediaLibrary import.</info>');
         $output->writeln($this->getOutputMessageForImportResults(
@@ -37,11 +29,7 @@ class ImportCommand extends ContainerAwareCommand
         ));
     }
 
-    /**
-     * @param ImportResults $importResults
-     * @return string
-     */
-    private function getOutputMessageForImportResults(ImportResults $importResults)
+    private function getOutputMessageForImportResults(ImportResults $importResults): string
     {
         $message = '<info>[OK] Import of "' . $importResults->getNumberOfQueuedItems() . '" MediaItems finished.';
         $message .= "\n\nMediaItemImport changes:\n";

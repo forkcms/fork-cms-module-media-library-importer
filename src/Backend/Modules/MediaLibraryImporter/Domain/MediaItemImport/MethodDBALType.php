@@ -7,11 +7,8 @@ use Doctrine\DBAL\Types\StringType;
 
 final class MethodDBALType extends StringType
 {
-    const NAME = 'media_item_import_method';
+    public const NAME = 'media_item_import_method';
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return self::NAME;

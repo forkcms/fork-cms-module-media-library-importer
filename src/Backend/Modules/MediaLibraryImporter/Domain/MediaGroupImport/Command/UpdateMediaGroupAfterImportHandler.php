@@ -11,18 +11,12 @@ class UpdateMediaGroupAfterImportHandler
     /** @var MediaGroupMediaItemRepository */
     protected $mediaGroupMediaItemRepository;
 
-    /**
-     * @param MediaGroupMediaItemRepository $mediaGroupMediaItemRepository
-     */
     public function __construct(MediaGroupMediaItemRepository $mediaGroupMediaItemRepository)
     {
         $this->mediaGroupMediaItemRepository = $mediaGroupMediaItemRepository;
     }
 
-    /**
-     * @param UpdateMediaGroupAfterImport $updateMediaGroupAfterImport
-     */
-    public function handle(UpdateMediaGroupAfterImport $updateMediaGroupAfterImport)
+    public function handle(UpdateMediaGroupAfterImport $updateMediaGroupAfterImport): void
     {
         /** @var MediaGroup $mediaGroup */
         $mediaGroup = $updateMediaGroupAfterImport->getMediaGroupEntity();

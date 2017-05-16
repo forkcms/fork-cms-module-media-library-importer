@@ -10,9 +10,6 @@ final class MediaGroupsToUpdate
     /** @var MediaGroupToUpdate[] */
     private $mediaGroups = [];
 
-    /**
-     * @param MediaItemImport $mediaItemImport
-     */
     public function add(MediaItemImport $mediaItemImport)
     {
         /** @var MediaGroupToUpdate $mediaGroupToUpdate */
@@ -20,10 +17,6 @@ final class MediaGroupsToUpdate
         $mediaGroupToUpdate->addMediaItemImport($mediaItemImport);
     }
 
-    /**
-     * @param MediaGroup $mediaGroup
-     * @return MediaGroupToUpdate
-     */
     private function get(MediaGroup $mediaGroup): MediaGroupToUpdate
     {
         /** @var string $mediaGroupId */
@@ -37,9 +30,6 @@ final class MediaGroupsToUpdate
         return $this->mediaGroups[$mediaGroupId];
     }
 
-    /**
-     * @return array
-     */
     public function getAll(): array
     {
         return $this->mediaGroups;

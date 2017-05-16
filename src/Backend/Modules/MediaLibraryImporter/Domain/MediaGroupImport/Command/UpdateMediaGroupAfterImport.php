@@ -13,27 +13,17 @@ class UpdateMediaGroupAfterImport
     /** @var array|MediaItem[] */
     private $mediaItemsToConnect;
 
-    /**
-     * @param MediaGroup $mediaGroup
-     * @param array $mediaItemsToConnect
-     */
     public function __construct(MediaGroup $mediaGroup, array $mediaItemsToConnect)
     {
         $this->mediaGroupEntity = $mediaGroup;
         $this->mediaItemsToConnect = $mediaItemsToConnect;
     }
 
-    /**
-     * @return MediaGroup
-     */
     public function getMediaGroupEntity(): MediaGroup
     {
         return $this->mediaGroupEntity;
     }
 
-    /**
-     * @return array
-     */
     public function getMediaItemsToConnect(): array
     {
         return $this->mediaItemsToConnect;

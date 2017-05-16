@@ -29,15 +29,6 @@ class ExecuteMediaItemImportHandler
     /** @var MediaItemImportRepository */
     protected $mediaItemImportRepository;
 
-    /**
-     * ExecuteMediaItemImportHandler constructor.
-     *
-     * @param FileManager $fileManager
-     * @param LocalStorageProviderInterface $localStorageProvider
-     * @param MediaFolderRepository $mediaFolderRepository
-     * @param MediaItemImportRepository $mediaItemImportRepository
-     * @param MediaItemRepository $mediaItemRepository
-     */
     public function __construct(
         FileManager $fileManager,
         LocalStorageProviderInterface $localStorageProvider,
@@ -52,10 +43,7 @@ class ExecuteMediaItemImportHandler
         $this->mediaItemRepository = $mediaItemRepository;
     }
 
-    /**
-     * @param ExecuteMediaItemImport $executeMediaItemImport
-     */
-    public function handle(ExecuteMediaItemImport $executeMediaItemImport)
+    public function handle(ExecuteMediaItemImport $executeMediaItemImport): void
     {
         /** @var MediaItemImport $mediaItemImport */
         $mediaItemImport = $executeMediaItemImport->getMediaItemImportEntity();
@@ -72,7 +60,7 @@ class ExecuteMediaItemImportHandler
      * @param string $destinationPath
      * @throws MediaImportFailed
      */
-    private function download(MediaItemImport $mediaItemImport, string $destinationPath)
+    private function download(MediaItemImport $mediaItemImport, string $destinationPath): void
     {
         $tryDownloading = true;
         $downloadCounter = 0;
@@ -92,11 +80,7 @@ class ExecuteMediaItemImportHandler
         }
     }
 
-    /**
-     * @param MediaItemImport $mediaItemImport
-     * @return MediaItem|null
-     */
-    private function findExistingMediaItem(MediaItemImport $mediaItemImport)
+    private function findExistingMediaItem(MediaItemImport $mediaItemImport): ?MediaItem
     {
         /** @var MediaItemImport|null $existingMediaItemImport */
         $existingMediaItemImport = $this->mediaItemImportRepository->findExistingImported(
@@ -111,10 +95,6 @@ class ExecuteMediaItemImportHandler
         return $existingMediaItemImport->getMediaItem();
     }
 
-    /**
-     * @param MediaItemImport $mediaItemImport
-     * @return string
-     */
     private function getDestinationPath(MediaItemImport $mediaItemImport): string
     {
         // Define upload dir
@@ -133,11 +113,11 @@ class ExecuteMediaItemImportHandler
     }
 
     /**
-     * @param $path
-     * @return integer
+     * @param string $path
+     * @return int
      * @throws MediaImportFailed
      */
-    private function getFileSize($path)
+    private function getFileSize(string $path): int
     {
         try {
             return filesize($path);
@@ -151,7 +131,7 @@ class ExecuteMediaItemImportHandler
      * @return string
      * @throws MediaImportFailed
      */
-    private function getMd5($path)
+    private function getMd5(string $path): string
     {
         try {
             return md5_file($path);
@@ -160,11 +140,7 @@ class ExecuteMediaItemImportHandler
         }
     }
 
-    /**
-     * @param MediaItemImport $mediaItemImport
-     * @param string $destinationPath
-     */
-    private function importMedia(MediaItemImport $mediaItemImport, string $destinationPath)
+    private function importMedia(MediaItemImport $mediaItemImport, string $destinationPath): void
     {
         switch ($mediaItemImport->getMethod()->getMethod()) {
             case Method::COPY:
@@ -232,7 +208,7 @@ class ExecuteMediaItemImportHandler
      *
      * @param MediaItemImport $mediaItemImport
      */
-    private function linkNewMediaItem(MediaItemImport $mediaItemImport)
+    private function linkNewMediaItem(MediaItemImport $mediaItemImport): void
     {
         // Create new MediaItem
         try {

@@ -17,9 +17,6 @@ class CreateImportForMediaGroupDataTransferObject
     /** @var Type */
     public $type;
 
-    /**
-     * @param MediaGroup|null $mediaGroup
-     */
     public function __construct(MediaGroup $mediaGroup = null)
     {
         $this->mediaGroupEntity = $mediaGroup;
@@ -31,10 +28,7 @@ class CreateImportForMediaGroupDataTransferObject
         $this->type = $mediaGroup->getType();
     }
 
-    /**
-     * @param MediaItemImportDataTransferObject $mediaItemImportDataTransferObject
-     */
-    public function add(MediaItemImportDataTransferObject $mediaItemImportDataTransferObject)
+    public function add(MediaItemImportDataTransferObject $mediaItemImportDataTransferObject): void
     {
         if ($this->hasExistingMediaGroup()) {
             $mediaItemImportDataTransferObject->setMediaGroup($this->mediaGroupEntity);
@@ -43,26 +37,17 @@ class CreateImportForMediaGroupDataTransferObject
         $this->mediaItemImportDataTransferObjects[] = $mediaItemImportDataTransferObject;
     }
 
-    /**
-     * @return MediaGroup
-     */
     public function getMediaGroupEntity(): MediaGroup
     {
         return $this->mediaGroupEntity;
     }
 
-    /**
-     * @return bool
-     */
     public function hasExistingMediaGroup(): bool
     {
         return $this->mediaGroupEntity instanceof MediaGroup;
     }
 
-    /**
-     * @param MediaGroup $mediaGroup
-     */
-    public function setMediaGroupEntity(MediaGroup $mediaGroup)
+    public function setMediaGroupEntity(MediaGroup $mediaGroup): void
     {
         $this->mediaGroupEntity = $mediaGroup;
     }

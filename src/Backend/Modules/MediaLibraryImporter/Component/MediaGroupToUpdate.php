@@ -19,18 +19,12 @@ final class MediaGroupToUpdate
     /** @var bool */
     protected $hasChanges = false;
 
-    /**
-     * @param MediaGroup $mediaGroup
-     */
     public function __construct(MediaGroup $mediaGroup)
     {
         $this->mediaGroup = $mediaGroup;
     }
 
-    /**
-     * @param MediaItemImport $mediaItemImport
-     */
-    public function addMediaItemImport(MediaItemImport $mediaItemImport)
+    public function addMediaItemImport(MediaItemImport $mediaItemImport): void
     {
         // Stop here, because no MediaItem found
         if ($mediaItemImport->getMediaItem() === null) {
@@ -43,18 +37,11 @@ final class MediaGroupToUpdate
         }
     }
 
-    /**
-     * @param int $sequence
-     * @param MediaItem $mediaItem
-     */
-    private function addConnectedItem(int $sequence, MediaItem $mediaItem)
+    private function addConnectedItem(int $sequence, MediaItem $mediaItem): void
     {
         $this->connectedItems[$sequence] = $mediaItem;
     }
 
-    /**
-     * @return array
-     */
     public function getConnectedItems(): array
     {
         $connectedItems = $this->connectedItems;
@@ -66,26 +53,16 @@ final class MediaGroupToUpdate
         return array_values($connectedItems);
     }
 
-    /**
-     * @return MediaGroup
-     */
     public function getMediaGroup(): MediaGroup
     {
         return $this->mediaGroup;
     }
 
-    /**
-     * @return bool
-     */
     public function hasChanges(): bool
     {
         return $this->hasChanges;
     }
 
-    /**
-     * @param MediaItemImport $mediaItemImport
-     * @return bool
-     */
     private function hasChangesInMediaItemImport(MediaItemImport $mediaItemImport): bool
     {
         if ($mediaItemImport->getMediaItem() === null) {

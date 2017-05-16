@@ -24,12 +24,6 @@ class MediaItemImportDataTransferObject
     /** @var string|null */
     public $title;
 
-    /**
-     * @param string $path
-     * @param int $sequence
-     * @param Method $method
-     * @param string|null $title
-     */
     public function __construct(
         string $path,
         int $sequence,
@@ -42,34 +36,22 @@ class MediaItemImportDataTransferObject
         $this->title = $title;
     }
 
-    /**
-     * @return MediaItemImport
-     */
     public function getMediaItemImport(): MediaItemImport
     {
         return $this->mediaItemImport;
     }
 
-    /**
-     * @param MediaItemImport $mediaItemImport
-     */
-    public function setMediaItemImport(MediaItemImport $mediaItemImport)
+    public function setMediaItemImport(MediaItemImport $mediaItemImport): void
     {
         $this->mediaItemImport = $mediaItemImport;
     }
 
-    /**
-     * @return MediaGroup
-     */
     public function getMediaGroup(): MediaGroup
     {
         return $this->mediaGroup;
     }
 
-    /**
-     * @param MediaGroup $mediaGroup
-     */
-    public function setMediaGroup(MediaGroup $mediaGroup)
+    public function setMediaGroup(MediaGroup $mediaGroup): void
     {
         $this->mediaGroup = $mediaGroup;
     }

@@ -19,18 +19,12 @@ class ImportResults
     /** @var int */
     protected $numberOfSuccessfulImports = 0;
 
-    /**
-     * @param int $numberOfQueuedItems
-     */
     public function __construct(int $numberOfQueuedItems)
     {
         $this->numberOfQueuedItems = $numberOfQueuedItems;
     }
 
-    /**
-     * @param MediaItemImport $mediaItemImport
-     */
-    public function bumpForMediaItemImport(MediaItemImport $mediaItemImport)
+    public function bumpForMediaItemImport(MediaItemImport $mediaItemImport): void
     {
         switch ($mediaItemImport->getStatus()->getStatus()) {
             case Status::IMPORTED:
@@ -49,48 +43,36 @@ class ImportResults
         }
     }
 
-    public function bumpNumberOfErrorImports()
+    public function bumpNumberOfErrorImports(): void
     {
         $this->numberOfErrorImports ++;
     }
 
-    public function bumpNumberOfImportedItems()
+    public function bumpNumberOfImportedItems(): void
     {
         $this->numberOfImportedItems ++;
     }
 
-    public function bumpNumberOfSuccessfulImports()
+    public function bumpNumberOfSuccessfulImports(): void
     {
         $this->numberOfSuccessfulImports ++;
     }
 
-    /**
-     * @return int
-     */
     public function getNumberOfErrorImports(): int
     {
         return $this->numberOfErrorImports;
     }
 
-    /**
-     * @return int
-     */
     public function getNumberOfImportedItems(): int
     {
         return $this->numberOfImportedItems;
     }
 
-    /**
-     * @return int
-     */
     public function getNumberOfQueuedItems(): int
     {
         return $this->numberOfQueuedItems;
     }
 
-    /**
-     * @return int
-     */
     public function getNumberOfSuccessfulImports(): int
     {
         return $this->numberOfSuccessfulImports;

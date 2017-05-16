@@ -7,9 +7,6 @@ use Backend\Modules\MediaLibraryImporter\Domain\MediaGroupImport\Command\Base\Cr
 
 class CreateImportForNewMediaGroup extends CreateImportForMediaGroupDataTransferObject
 {
-    /**
-     * @param Type $type
-     */
     public function __construct(Type $type)
     {
         parent::__construct();

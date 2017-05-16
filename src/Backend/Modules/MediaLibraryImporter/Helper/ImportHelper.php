@@ -20,10 +20,6 @@ class ImportHelper
     /** @var MediaItemImportRepository */
     private $mediaItemImportRepository;
 
-    /**
-     * @param MessageBusSupportingMiddleware $commandBus
-     * @param MediaItemImportRepository $mediaItemImportRepository
-     */
     public function __construct(
         MessageBusSupportingMiddleware $commandBus,
         MediaItemImportRepository $mediaItemImportRepository
@@ -32,9 +28,6 @@ class ImportHelper
         $this->mediaItemImportRepository = $mediaItemImportRepository;
     }
 
-    /**
-     * @return ImportResults
-     */
     public function execute(): ImportResults
     {
         /** @var ImportResults $importResults */
@@ -49,10 +42,6 @@ class ImportHelper
         return $importResults;
     }
 
-    /**
-     * @param MediaItemImport $mediaItemImport
-     * @return ExecuteMediaItemImport
-     */
     private function executeMediaItemImport(MediaItemImport $mediaItemImport): ExecuteMediaItemImport
     {
         /** @var ExecuteMediaItemImport $executeMediaItemImport */
@@ -64,14 +53,10 @@ class ImportHelper
         return $executeMediaItemImport;
     }
 
-    /**
-     * @param MediaGroupsToUpdate $mediaGroupsToUpdate
-     * @param ImportResults $importResults
-     */
     private function executeMediaItemImports(
         MediaGroupsToUpdate $mediaGroupsToUpdate,
         ImportResults $importResults
-    ) {
+    ): void {
         /** @var array $mediaItemImports */
         $mediaItemImports = $this->mediaItemImportRepository->findAllForImport();
 
@@ -83,10 +68,7 @@ class ImportHelper
         }
     }
 
-    /**
-     * @param MediaGroupToUpdate $mediaGroupToUpdate
-     */
-    private function executeMediaGroupUpdate(MediaGroupToUpdate $mediaGroupToUpdate)
+    private function executeMediaGroupUpdate(MediaGroupToUpdate $mediaGroupToUpdate): void
     {
         if (!$mediaGroupToUpdate->hasChanges()) {
             return;
@@ -102,10 +84,7 @@ class ImportHelper
         $this->commandBus->handle($updateMediaGroup);
     }
 
-    /**
-     * @param MediaGroupsToUpdate $mediaGroupsToUpdate
-     */
-    private function executeMediaGroupsToUpdate(MediaGroupsToUpdate $mediaGroupsToUpdate)
+    private function executeMediaGroupsToUpdate(MediaGroupsToUpdate $mediaGroupsToUpdate): void
     {
         /** @var MediaGroupToUpdate $mediaGroupToUpdate */
         foreach ($mediaGroupsToUpdate->getAll() as $mediaGroupToUpdate) {

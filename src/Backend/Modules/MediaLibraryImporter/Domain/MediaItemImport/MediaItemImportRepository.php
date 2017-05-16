@@ -7,19 +7,12 @@ use Doctrine\ORM\EntityRepository;
 
 final class MediaItemImportRepository extends EntityRepository
 {
-    /**
-     * @param MediaItemImport $mediaItemImport
-     *
-     * We don't flush here, see http://disq.us/p/okjc6b
-     */
-    public function add(MediaItemImport $mediaItemImport)
+    public function add(MediaItemImport $mediaItemImport): void
     {
+        // We don't flush here, see http://disq.us/p/okjc6b
         $this->getEntityManager()->persist($mediaItemImport);
     }
 
-    /**
-     * @return array
-     */
     public function findAllForImport(): array
     {
         return $this->findBy(
@@ -28,12 +21,7 @@ final class MediaItemImportRepository extends EntityRepository
         );
     }
 
-    /**
-     * @param MediaGroup $mediaGroup
-     * @param string $path
-     * @return null|object
-     */
-    public function findExistingImported(MediaGroup $mediaGroup, string $path)
+    public function findExistingImported(MediaGroup $mediaGroup, string $path): ?MediaItemImport
     {
         return $this->findOneBy(
             [
@@ -45,9 +33,6 @@ final class MediaItemImportRepository extends EntityRepository
         );
     }
 
-    /**
-     * @return int
-     */
     public function getNumberOfImports(): int
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
@@ -60,13 +45,9 @@ final class MediaItemImportRepository extends EntityRepository
         return $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @param MediaItemImport $mediaItemImport
-     *
-     * We don't flush here, see http://disq.us/p/okjc6b
-     */
     public function remove(MediaItemImport $mediaItemImport)
     {
+        // We don't flush here, see http://disq.us/p/okjc6b
         $this->getEntityManager()->remove($mediaItemImport);
     }
 }
