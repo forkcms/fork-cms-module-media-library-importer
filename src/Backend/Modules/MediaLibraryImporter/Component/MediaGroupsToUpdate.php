@@ -10,7 +10,7 @@ final class MediaGroupsToUpdate
     /** @var MediaGroupToUpdate[] */
     private $mediaGroups = [];
 
-    public function add(MediaItemImport $mediaItemImport)
+    public function addMediaItemImportToConnect(MediaItemImport $mediaItemImport)
     {
         /** @var MediaGroupToUpdate $mediaGroupToUpdate */
         $mediaGroupToUpdate = $this->get($mediaItemImport->getMediaGroup());

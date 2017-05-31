@@ -59,8 +59,8 @@ class ImportHelper
         /** @var MediaItemImport $mediaItemImport */
         foreach ($mediaItemImports as $mediaItemImport) {
             $executeMediaItemImport = $this->executeMediaItemImport($mediaItemImport);
-            $mediaGroupsToUpdate->add($executeMediaItemImport->getMediaItemImportEntity());
             $importResults->bumpAfterMediaItemImport($executeMediaItemImport->getMediaItemImportEntity());
+            $mediaGroupsToUpdate->addMediaItemImportToConnect($executeMediaItemImport->getMediaItemImportEntity());
         }
     }
 
