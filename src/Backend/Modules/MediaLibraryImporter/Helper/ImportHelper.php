@@ -30,10 +30,7 @@ class ImportHelper
 
     public function execute(): ImportResults
     {
-        /** @var ImportResults $importResults */
         $importResults = new ImportResults($this->mediaItemImportRepository->getNumberOfImports());
-
-        /** @var MediaGroupsToUpdate $mediaGroupsToUpdate */
         $mediaGroupsToUpdate = new MediaGroupsToUpdate();
 
         $this->executeMediaItemImports($mediaGroupsToUpdate, $importResults);
@@ -44,7 +41,6 @@ class ImportHelper
 
     private function executeMediaItemImport(MediaItemImport $mediaItemImport): ExecuteMediaItemImport
     {
-        /** @var ExecuteMediaItemImport $executeMediaItemImport */
         $executeMediaItemImport = new ExecuteMediaItemImport($mediaItemImport);
 
         // Handle the MediaItemImport execute
@@ -74,7 +70,6 @@ class ImportHelper
             return;
         }
 
-        /** @var UpdateMediaGroupAfterImport $updateMediaGroup */
         $updateMediaGroup = new UpdateMediaGroupAfterImport(
             $mediaGroupToUpdate->getMediaGroup(),
             $mediaGroupToUpdate->getConnectedItems()
