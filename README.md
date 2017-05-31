@@ -26,15 +26,15 @@ Use at your own risk, this module isn't finished yet and still in development.
 // Contains all the vehicles
 $vehicles = [/*...*/];
 
-if ($vehicle->exists()) {
-    // Create import for existing media group
-    $mediaGroupImportCommand = new CreateImportForExistingMediaGroup($vehicle->getMediaGroup());
-} else {
-    // Create import for new media group
-    $mediaGroupImportCommand = new CreateImportForNewMediaGroup(Backend\Modules\MediaLibrary\Domain\MediaGroup\Type::image());
-}
-
 foreach ($vehicles as $vehicle) {
+    if ($vehicle->exists()) {
+        // Create import for existing media group
+        $mediaGroupImportCommand = new CreateImportForExistingMediaGroup($vehicle->getMediaGroup());
+    } else {
+        // Create import for new media group
+        $mediaGroupImportCommand = new CreateImportForNewMediaGroup(Backend\Modules\MediaLibrary\Domain\MediaGroup\Type::image());
+    }
+
     foreach ($vehicle->getImages() as $sequence => $image) {
         $mediaGroupImportCommand->add(
             new MediaItemImportDataTransferObject(
