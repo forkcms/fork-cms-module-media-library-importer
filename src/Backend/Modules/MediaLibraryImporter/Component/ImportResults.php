@@ -24,7 +24,7 @@ class ImportResults
         $this->numberOfQueuedItems = $numberOfQueuedItems;
     }
 
-    public function bumpForMediaItemImport(MediaItemImport $mediaItemImport): void
+    public function bumpAfterMediaItemImport(MediaItemImport $mediaItemImport): void
     {
         switch ($mediaItemImport->getStatus()->getStatus()) {
             case Status::IMPORTED:
