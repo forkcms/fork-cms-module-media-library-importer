@@ -45,13 +45,13 @@ foreach ($vehicles as $vehicle) {
             );
         );
     }
+    
+    // Handle the MediaGroupImport Update
+    $this->get('command_bus')->handle($mediaGroupImportCommand);
+    
+    // We can now set the $mediaGroup in our vehicle
+    $vehicle->setMediaGroup($mediaGroupImportCommand->getMediaGroup());
 }
-
-// Handle the MediaGroupImport Update
-$this->get('command_bus')->handle($mediaGroupImportCommand);
-
-// We can now set the $mediaGroup in our vehicle
-$vehicle->setMediaGroup($mediaGroupImportCommand->getMediaGroup());
 ```
 > The code above will fill our "MediaItemImport" table. But we still need to execute the following code to "copy", "move" or "download" the image/file to our system and make it create a MediaItem for it if needed.
 
