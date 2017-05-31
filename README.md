@@ -40,7 +40,7 @@ foreach ($vehicles as $vehicle) {
             new MediaItemImportDataTransferObject(
                 $image->path,
                 $sequence,
-                Method::copy() // Other possible values are; Method::move() or Method::download(),
+                Method::copy(), // Other possible values are; Method::move() or Method::download()
                 $image->title // Optionally
             );
         );
