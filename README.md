@@ -31,7 +31,7 @@ if ($vehicle->exists()) {
     $mediaGroupImportCommand = new CreateImportForExistingMediaGroup($vehicle->getMediaGroup());
 } else {
     // Create import for new media group
-    $mediaGroupImportCommand = new CreateImportForNewMediaGroup(Type::image());
+    $mediaGroupImportCommand = new CreateImportForNewMediaGroup(Backend\Modules\MediaLibrary\Domain\MediaGroup\Type::image());
 }
 
 foreach ($vehicles as $vehicle) {
