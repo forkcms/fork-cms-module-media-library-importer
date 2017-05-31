@@ -26,15 +26,15 @@ class ImportResults
 
     public function bumpAfterMediaItemImport(MediaItemImport $mediaItemImport): void
     {
-        switch ($mediaItemImport->getStatus()->getStatus()) {
-            case Status::IMPORTED:
+        switch ($mediaItemImport->getStatus()) {
+            case Status::imported():
                 $this->bumpNumberOfImportedItems();
                 $this->bumpNumberOfSuccessfulImports();
                 break;
-            case Status::EXISTING:
+            case Status::existing():
                 $this->bumpNumberOfSuccessfulImports();
                 break;
-            case Status::ERROR:
+            case Status::error():
                 $this->bumpNumberOfErrorImports();
                 break;
             default:
