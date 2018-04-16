@@ -167,13 +167,8 @@ class ExecuteMediaItemImportHandler
         $newPath = $mediaItemImport->getPath();
 
         // We check if our existing MediaItem file matches the new one we received
-        if ($this->getFileSize($oldPath) === $this->getFileSize($newPath)
-            && $this->getMd5($oldPath) === $this->getMd5($newPath)
-        ) {
-            return true;
-        }
-
-        return false;
+        return ($this->getFileSize($oldPath) === $this->getFileSize($newPath))
+            && ($this->getMd5($oldPath) === $this->getMd5($newPath));
     }
 
     /**
