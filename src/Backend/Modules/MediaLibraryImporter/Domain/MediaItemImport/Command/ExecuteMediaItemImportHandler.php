@@ -176,6 +176,7 @@ class ExecuteMediaItemImportHandler
      *
      * @param MediaItemImport $mediaItemImport
      * @return bool
+     * @throws MediaImportFailed
      */
     private function linkExistingMediaItem(MediaItemImport $mediaItemImport): bool
     {
